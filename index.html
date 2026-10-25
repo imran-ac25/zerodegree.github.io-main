@@ -2228,30 +2228,50 @@
     }
 
     // 2. Booking Form to WhatsApp auto-redirect
-    function handleFormSubmit(event) {
-      event.preventDefault();
-      const name = document.getElementById('cust-name').value.trim();
-      const phone = document.getElementById('cust-phone').value.trim();
-      if (!/^[6-9]\d{9}$/.test(phone)) {
-        alert('Please enter a valid 10-digit Indian mobile number.');
-        document.getElementById('cust-phone').focus();
-        return;
-      }
-      const service = document.getElementById('cust-service').value;
-      const date = document.getElementById('cust-date').value || 'Earliest Available';
-      const address = document.getElementById('cust-address').value.trim() || 'Not specified';
+  function handleFormSubmit(event) {
+    event.preventDefault();
 
-      const message = `*New AC Service Booking Enquiry - Zero Degree*\n\n`
-                      `👤 *Name:* ${name}\n` +
-                      `📞 *Phone:* ${phone}\n` +
-                      `❄ *Service:* ${service}\n` +
-                      `📅 *Preferred Date:* ${date}\n` +
-                      `📍 *Address:* ${address}`;
+    // Get form values
+    const name = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    const service = document.getElementById('cust-service').value;
+    const date = document.getElementById('cust-date').value || 'Earliest Available';
+    const address = document.getElementById('cust-address').value.trim() || 'Not specified';
 
-      const encodedMsg = encodeURIComponent(message);
-      const whatsappUrl = `https://wa.me/917654808226?text=${encodedMsg}`;
-      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    // Validate name
+    if (!name) {
+      alert('Please enter your name.');
+      document.getElementById('cust-name').focus();
+      return;
     }
+
+    // Validate phone number (Indian format)
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      alert('Please enter a valid 10-digit Indian mobile number.');
+      document.getElementById('cust-phone').focus();
+      return;
+    }
+
+    // Validate service selection
+    if (!service) {
+      alert('Please select a service.');
+      document.getElementById('cust-service').focus();
+      return;
+    }
+
+    // Construct WhatsApp message
+    const message = `*New AC Service Booking Enquiry - Zero Degree*\n\n` +
+                    `👤 *Name:* ${name}\n` +
+                    `📞 *Phone:* ${phone}\n` +
+                    `❄ *Service:* ${service}\n` +
+                    `📅 *Preferred Date:* ${date}\n` +
+                    `📍 *Address:* ${address}`;
+
+    // Encode message and open WhatsApp URL
+    const encodedMsg = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/917654808226?text=${encodedMsg}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+}
 
     // 3. FAQ Accordion Toggle
     function toggleFaq(button) {
